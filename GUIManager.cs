@@ -4,6 +4,7 @@ public class GUIManager : MonoBehaviour {
     Color32 color = new Color32(255, 255, 255, 50);
 
 	private void OnGUI() {
+        // Draws Stamina Bar
         Texture2D texture = new Texture2D(1, 1);
         texture.SetPixel(0, 0, color);
         texture.Apply();

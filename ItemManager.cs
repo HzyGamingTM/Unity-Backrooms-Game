@@ -18,6 +18,7 @@ public class ItemManager : MonoBehaviour {
     PosRotData goofy_notebook;
 	PosRotData chips;
 
+	public Transform handPivot;
     public GameObject hand;
 	public GameObject dropEmpty;
 
@@ -123,7 +124,7 @@ public class ItemManager : MonoBehaviour {
 		} else highlight = false;
 
 		if (Input.GetKeyDown(KeyCode.V) && hotbarItems[hotbarSlot] != null) {
-			GameObject item = hotbarItems[hotbarSlot];
+			GameObject item = hotbarItems	[hotbarSlot];
 			GameObject clone = Instantiate(item, dropEmpty.transform.position, dropEmpty.transform.rotation);
 
 			Destroy(item);
@@ -141,13 +142,16 @@ public class ItemManager : MonoBehaviour {
         if (Input.mouseScrollDelta.y > 0) {
             hotbarSlot++;
             if (hotbarSlot > 2) hotbarSlot = 0;
-		}
+			handPivot.localRotation = Quaternion.Euler(60, 0, 0);
+
+        }
 
         if (Input.mouseScrollDelta.y < 0) {
 			hotbarSlot--;
 			if (hotbarSlot < 0) hotbarSlot = 2;
+            handPivot.localRotation = Quaternion.Euler(60, 0, 0);
         }
-		
+
         SwitchItem(hotbarSlot);
 	}
 	public void SwitchItem(int slot) {

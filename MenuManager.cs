@@ -14,7 +14,7 @@ public class MenuManager : MonoBehaviour {
 	public TMP_Text quitText;
 
 	public GameObject playerPrefab;
-	public static Vector3 spawnLocation;
+	public static Vector3 spawnLocation = new(2.985f, 1f, -0.6f);
 
     private void Awake() {
         if (instance == null) {
@@ -23,7 +23,6 @@ public class MenuManager : MonoBehaviour {
     }
 
     public void StartGame() {
-		spawnLocation = new(1.87f, 0, -1);
 		Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
 		Destroy(Camera.main.gameObject);
         Cursor.lockState = CursorLockMode.Locked;
@@ -85,12 +84,14 @@ public class MenuManager : MonoBehaviour {
 	public static bool allowTeleport = false;
 
     void FixedUpdate() {
-		if (!allowTeleport) return;
+		if (Player.shared != null)
 		if (Player.shared.playerCamera.transform.position.y < -10) {
-			ItemManager.Clear();
-			loadingScreen.SetActive(true);
-            SceneManager.LoadSceneAsync(1);
-            allowTeleport = false;
-        }
+			if (allowTeleport) {
+                ItemManager.Clear();
+                loadingScreen.SetActive(true);
+                SceneManager.LoadSceneAsync(1);
+                allowTeleport = false;
+            }
+		}
     }
 }
