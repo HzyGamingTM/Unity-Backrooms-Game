@@ -5,7 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour {
 	public static MenuManager instance;
+	private int activeMenu = 0;
+
 	public GameObject menu;
+	public GameObject multiplayerMenu;
 	public GameObject loadingScreen;
 	public GameObject GUI;
 
@@ -13,13 +16,15 @@ public class MenuManager : MonoBehaviour {
 	public TMP_Text settingsText;
 	public TMP_Text quitText;
 
+	public TMP_Text singleplayerText;
+	public TMP_Text multiplayerText;
+	public TMP_Text multiplayerReturnText;
+
 	public GameObject playerPrefab;
 	public static Vector3 spawnLocation = new(2.985f, 1f, -0.6f);
 
     private void Awake() {
-        if (instance == null) {
-			instance = this;
-		}
+        if (instance == null) instance = this;
     }
 
     public void StartGame() {
@@ -30,6 +35,26 @@ public class MenuManager : MonoBehaviour {
 
     public void ButtonPlay() {
         menu.SetActive(false);
+		activeMenu = 1;
+		multiplayerMenu.SetActive(true);
+    }
+
+	public void ButtonSingleplayer() {
+		multiplayerMenu.SetActive(false);
+		EnterGame();
+	}
+
+	public void ButtonMultiplayer() {
+
+	}
+
+	public void ButtonReturn() {
+		multiplayerMenu.SetActive(false);
+		menu.SetActive(true);
+		activeMenu = 0;
+	}
+
+	public void EnterGame() {
         Camera.main.GetComponent<Animator>().Play("Camera");
         StartCoroutine(Transition());
     }
@@ -40,32 +65,50 @@ public class MenuManager : MonoBehaviour {
     }
 
 	public void ButtonSettings() {
-
+		// TODO: Settings
 	}
 
 	public void ButtonQuit() {
 		Application.Quit();
+		// TODO: Quit Animation or smth
 	}
 
-	public void UnHover() {
-        playText.text = "Play";
-        settingsText.text = "Settings";
-        quitText.text = "Quit";
+	void ResetText() {
+        switch (activeMenu) {
+			case 0:
+                playText.text = "Play";
+                settingsText.text = "Settings";
+                quitText.text = "Quit";
+                playText.color = Color.white;
+                settingsText.color = Color.white;
+                quitText.color = Color.white;
+                break;
 
-        playText.color = Color.white;
-        settingsText.color = Color.white;
-        quitText.color = Color.white;
+			case 1:
+                singleplayerText.text = "Singleplayer";
+                multiplayerText.text = "Multiplayer";
+                multiplayerReturnText.text = "Return";
+                singleplayerText.color = Color.white;
+                multiplayerText.color = Color.white;
+                multiplayerReturnText.color = Color.white;
+                break;
+
+			default:
+				Debug.LogError("Invalid Menu!");
+				break;
+		}
     }
-	public void Hover(int hoveredButton) {
-		playText.text = "Play";
-		settingsText.text = "Settings";
-		quitText.text = "Quit";
 
-		playText.color = Color.white;
-		settingsText.color = Color.white;
-		quitText.color = Color.white;
+	public void UnHover() {
+        ResetText();
+    }
+
+	public void Hover(int hoveredButton) {
+		ResetText();
 
 		switch (hoveredButton) {
+
+			// Main Menu:
 			case 0:
 				playText.text = "> Play <";
 				playText.color = Color.yellow;
@@ -78,6 +121,20 @@ public class MenuManager : MonoBehaviour {
 				quitText.text = "> Quit <";
 				quitText.color = Color.yellow;
 				break;
+
+			// Multiplayer Menu
+			case 3:
+				singleplayerText.text = "> Singleplayer <";
+				singleplayerText.color = Color.yellow;
+				break;
+			case 4:
+				multiplayerText.text = "> Multiplayer <";
+                multiplayerText.color = Color.yellow;
+                break;
+			case 5:
+                multiplayerReturnText.text = "> Return <";
+                multiplayerReturnText.color = Color.yellow;
+                break;
 		}
 	}
 

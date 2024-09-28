@@ -8,7 +8,8 @@ public class HeadBob : MonoBehaviour {
 	public Transform handPivot;
 
 	float bobSpeed = 14f;
-	float defaultPosY = 0.7f;
+	[SerializeField]
+	float defaultPosY = 3.05f;
 	float timer = 0f;
 
 	float tiltAngle = 20f;
@@ -18,7 +19,7 @@ public class HeadBob : MonoBehaviour {
 
 	public Transform crawlDown;
 
-	private void Update() {
+    private void Update() {
 		// Bruh this took me 2hrs to figure out :skull:
 		// Head Tilt
 		if (Input.GetKey(KeyCode.Q)) {
@@ -39,7 +40,7 @@ public class HeadBob : MonoBehaviour {
 
 		// Handle crouch
 		if (Input.GetKey(KeyCode.C)) {
-			defaultPosY = Mathf.Lerp(defaultPosY, crawlDown.position.y - 2.5f, 6.5f * Time.deltaTime);
+			defaultPosY = Mathf.Lerp(defaultPosY, crawlDown.position.y - 1, 6.5f * Time.deltaTime);
 			Player.shared.controller.center = new(0, -0.5f, 0);
 			Player.shared.controller.height = 1f;
 			Player.shared.isCrouching = true;
@@ -48,7 +49,7 @@ public class HeadBob : MonoBehaviour {
             frequency = 0.6f;
         }
 		else {
-			defaultPosY = Mathf.Lerp(defaultPosY, peekOrigin.position.y - 2.5f, 6.5f * Time.deltaTime);
+			defaultPosY = Mathf.Lerp(defaultPosY, 0.7f, 6.5f * Time.deltaTime);
 			Player.shared.controller.center = new(0, 0, 0);
 			Player.shared.controller.height = 2;
             Player.shared.isCrouching = false;
